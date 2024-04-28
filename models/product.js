@@ -3,6 +3,11 @@ module.exports = (sequelize, DataTypes) => {
     image: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        isUrl: {
+          msg: "Image URL must be a valid URL",
+        },
+      },
     },
     name: {
       type: DataTypes.STRING,
