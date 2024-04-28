@@ -8,7 +8,12 @@ const routes = require("./routes");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://soal3-fe.vercel.app"],
+    credentials: true,
+  })
+);
 
 app.use(routes);
 
