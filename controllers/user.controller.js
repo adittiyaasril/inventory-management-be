@@ -1,4 +1,3 @@
-require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require("../models");
@@ -26,13 +25,28 @@ const UserController = {
       if (!validPassword) {
         return res.status(401).json({ message: "Invalid password" });
       }
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: "1h",
+      const token = jwt.sign(
+        { id: user.id, name: user.name },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1h",
+        }
+      );
+      res.cookie("token", token, {
+        httpOnly: true,
+        maxAge: 3600000,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
       });
-      res.status(200).json({ token: token });
+      res.status(200).json({ token: token, name: user.name });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
+  },
+
+  async logoutUser(req, res) {
+    res.clearCookie("token");
+    res.status(200).json({ message: "Logout successful" });
   },
 
   async getUsers(req, res) {
