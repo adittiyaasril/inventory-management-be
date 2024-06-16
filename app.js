@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://soal3-fe.vercel.app"],
+    origin: ["http://localhost:3000", "https://store-inv.vercel.app"],
     credentials: true,
   })
 );
